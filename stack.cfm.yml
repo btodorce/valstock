@@ -231,3 +231,32 @@ Resources:
                 - Key: com.project.service
                   Value: web
         Type: AWS::IAM::Role
+    IAMPolicy:
+        Type: "AWS::IAM::Policy"
+        Properties:
+            PolicyDocument: !Sub |
+                {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "ssm:GetParameters",
+                                "secretsmanager:GetSecretValue",
+                                "kms:Decrypt"
+                            ],
+                            "Resource": "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${Cluster}/*"
+                        }
+                    ]
+                }
+            Roles:
+                - !Ref WebTaskExecutionRole
+            PolicyName: "${WebTaskExecutionRole}ParameterStoreReadAccess"
+    SSMParameter:
+        Type: "AWS::SSM::Parameter"
+        Properties:
+            Name: !Sub "/${Cluster}/NEXT_PUBLIC_UNSPLASH_ACCESS_KEY"
+            Type: String
+            Value: !Ref UnsplashAccessKey
+            DataType: text
+            Tier: Standard
