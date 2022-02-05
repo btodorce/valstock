@@ -1,15 +1,21 @@
 AWSTemplateFormatVersion: 2010-09-09
 Parameters:
-    CPU:
+    VPC:
+        Type: AWS::EC2::VPC::Id
+    Subnets:
+        Type: List<AWS::EC2::Subnet::Id>
+    CpuUsage:
         Description: Allocated cpu for the ecs service
         Type: String
+        Default: "256"
         AllowedValues:
             - "256"
             - "512"
             - "1024"
-    Memory:
+    MemoryUsage:
         Description: Allocated memory for the ecs service
         Type: String
+        Default: "512"
         AllowedValues:
             - "512"
             - "1024"
@@ -20,37 +26,37 @@ Parameters:
 Resources:
     CloudMap:
         Properties:
-            Description: Service Map for project valstock
+            Description: Service Map for Docker Compose project valstock
             Name: valstock.local
-            Vpc: vpc-0b6132ecfe0d4e51d
-        Type: AWS::ServiceDiscovery::PrivateDnsNamespace
+            Vpc: !Ref VPC
+        Type: "AWS::ServiceDiscovery::PrivateDnsNamespace"
     Cluster:
         Properties:
             ClusterName: valstock
             Tags:
-                - Key: com.project
+                - Key: com.docker.compose.project
                   Value: valstock
-        Type: AWS::ECS::Cluster
+        Type: "AWS::ECS::Cluster"
     Default80Ingress:
         Properties:
             CidrIp: 0.0.0.0/0
-            Description: web:80/tcp on default network
+            Description: "web:80/tcp on default network"
             FromPort: 80
             GroupId:
                 Ref: DefaultNetwork
             IpProtocol: TCP
             ToPort: 80
-        Type: AWS::EC2::SecurityGroupIngress
+        Type: "AWS::EC2::SecurityGroupIngress"
     DefaultNetwork:
         Properties:
             GroupDescription: valstock Security Group for default network
             Tags:
-                - Key: com.project
+                - Key: com.docker.compose.project
                   Value: valstock
-                - Key: com.project.network
+                - Key: com.docker.compose.network
                   Value: valstock_default
-            VpcId: vpc-0b6132ecfe0d4e51d
-        Type: AWS::EC2::SecurityGroup
+            VpcId: !Ref VPC
+        Type: "AWS::EC2::SecurityGroup"
     DefaultNetworkIngress:
         Properties:
             Description: Allow communication within network default
@@ -59,31 +65,28 @@ Resources:
             IpProtocol: "-1"
             SourceSecurityGroupId:
                 Ref: DefaultNetwork
-        Type: AWS::EC2::SecurityGroupIngress
+        Type: "AWS::EC2::SecurityGroupIngress"
     LoadBalancer:
         Properties:
             Scheme: internet-facing
             SecurityGroups:
                 - Ref: DefaultNetwork
-            Subnets:
-                - subnet-019e0c69521087957
-                - subnet-0d38e6a4c9ef4ed66
-                - subnet-017deb7d7b47d29e4
+            Subnets: !Ref Subnets
             Tags:
-                - Key: com.project
+                - Key: com.docker.compose.project
                   Value: valstock
             Type: application
-        Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+        Type: "AWS::ElasticLoadBalancingV2::LoadBalancer"
     LogGroup:
         Properties:
-            LogGroupName: /valstock
-        Type: AWS::Logs::LogGroup
+            LogGroupName: /docker-compose/valstock
+        Type: "AWS::Logs::LogGroup"
     WebService:
         DependsOn:
-            - WebTCPListener
+            - WebTCP80Listener
         Properties:
             Cluster:
-                Fn::GetAtt:
+                "Fn::GetAtt":
                     - Cluster
                     - Arn
             DeploymentConfiguration:
@@ -95,34 +98,31 @@ Resources:
             LaunchType: FARGATE
             LoadBalancers:
                 - ContainerName: web
-                  ContainerPort: 3000
+                  ContainerPort: 80
                   TargetGroupArn:
-                      Ref: WebTCPTargetGroup
+                      Ref: WebTCP80TargetGroup
             NetworkConfiguration:
                 AwsvpcConfiguration:
                     AssignPublicIp: ENABLED
                     SecurityGroups:
                         - Ref: DefaultNetwork
-                    Subnets:
-                        - subnet-019e0c69521087957
-                        - subnet-0d38e6a4c9ef4ed66
-                        - subnet-017deb7d7b47d29e4
-            PlatformVersion: 1.3.0
+                    Subnets: !Ref Subnets
+            PlatformVersion: 1.4.0
             PropagateTags: SERVICE
             SchedulingStrategy: REPLICA
             ServiceRegistries:
                 - RegistryArn:
-                      Fn::GetAtt:
+                      "Fn::GetAtt":
                           - WebServiceDiscoveryEntry
                           - Arn
             Tags:
-                - Key: com.project
+                - Key: com.docker.compose.project
                   Value: valstock
-                - Key: com.project.service
+                - Key: com.docker.compose.service
                   Value: web
             TaskDefinition:
                 Ref: WebTaskDefinition
-        Type: AWS::ECS::Service
+        Type: "AWS::ECS::Service"
     WebServiceDiscoveryEntry:
         Properties:
             Description: '"web" service discovery entry in Cloud Map'
@@ -136,30 +136,30 @@ Resources:
             Name: web
             NamespaceId:
                 Ref: CloudMap
-        Type: AWS::ServiceDiscovery::Service
-    WebTCPListener:
+        Type: "AWS::ServiceDiscovery::Service"
+    WebTCP80Listener:
         Properties:
             DefaultActions:
                 - ForwardConfig:
                       TargetGroups:
                           - TargetGroupArn:
-                                Ref: WebTCPTargetGroup
+                                Ref: WebTCP80TargetGroup
                   Type: forward
             LoadBalancerArn:
                 Ref: LoadBalancer
             Port: 80
             Protocol: HTTP
-        Type: AWS::ElasticLoadBalancingV2::Listener
-    WebTCPTargetGroup:
+        Type: "AWS::ElasticLoadBalancingV2::Listener"
+    WebTCP80TargetGroup:
         Properties:
-            Port: 3000
+            Port: 80
             Protocol: HTTP
             Tags:
-                - Key: com.project
+                - Key: com.docker.compose.project
                   Value: valstock
             TargetType: ip
-            VpcId: vpc-0b6132ecfe0d4e51d
-        Type: AWS::ElasticLoadBalancingV2::TargetGroup
+            VpcId: !Ref VPC
+        Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
     WebTaskDefinition:
         Properties:
             ContainerDefinitions:
@@ -167,14 +167,14 @@ Resources:
                       - eu-west-3.compute.internal
                       - valstock.local
                   Essential: false
-                  Image: docker/ecs-searchdomain-sidecar:1.0
+                  Image: "docker/ecs-searchdomain-sidecar:1.0"
                   LogConfiguration:
                       LogDriver: awslogs
                       Options:
                           awslogs-group:
                               Ref: LogGroup
                           awslogs-region:
-                              Ref: AWS::Region
+                              Ref: "AWS::Region"
                           awslogs-stream-prefix: valstock
                   Name: Web_ResolvConf_InitContainer
                 - Command:
@@ -187,7 +187,8 @@ Resources:
                       - Name: NEXT_PUBLIC_UNSPLASH_ACCESS_KEY
                         Value: !Ref UnsplashAccessKey
                   Essential: true
-                  Image: 188985040416.dkr.ecr.eu-west-3.amazonaws.com/valstock:latest
+                  Image: >-
+                      188985040416.dkr.ecr.eu-west-3.amazonaws.com/valstock:latest
                   LinuxParameters: {}
                   LogConfiguration:
                       LogDriver: awslogs
@@ -195,70 +196,39 @@ Resources:
                           awslogs-group:
                               Ref: LogGroup
                           awslogs-region:
-                              Ref: AWS::Region
+                              Ref: "AWS::Region"
                           awslogs-stream-prefix: valstock
                   Name: web
                   PortMappings:
-                      - ContainerPort: 3000
-                        HostPort: 3000
+                      - ContainerPort: 80
+                        HostPort: 80
                         Protocol: tcp
-            Cpu: !Ref CPU
+            Cpu: !Ref CpuUsage
             ExecutionRoleArn:
                 Ref: WebTaskExecutionRole
             Family: valstock-web
-            Memory: !Ref Memory
+            Memory: !Ref MemoryUsage
             NetworkMode: awsvpc
             RequiresCompatibilities:
                 - FARGATE
-        Type: AWS::ECS::TaskDefinition
+        Type: "AWS::ECS::TaskDefinition"
     WebTaskExecutionRole:
         Properties:
             AssumeRolePolicyDocument:
                 Statement:
                     - Action:
-                          - sts:AssumeRole
+                          - "sts:AssumeRole"
                       Condition: {}
                       Effect: Allow
                       Principal:
                           Service: ecs-tasks.amazonaws.com
                 Version: 2012-10-17
             ManagedPolicyArns:
-                - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
-                - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
-                - !Ref ParameterStoreReadAccess
+                - "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+                - "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
             Tags:
-                - Key: com.project
+                - Key: com.docker.compose.project
                   Value: valstock
-                - Key: com.project.service
+                - Key: com.docker.compose.service
                   Value: web
-        Type: AWS::IAM::Role
-    ParameterStoreReadAccess:
-        Type: "AWS::IAM::Policy"
-        Properties:
-            PolicyDocument: !Sub |
-                {
-                    "Version": "2012-10-17",
-                    "Statement": [
-                        {
-                            "Effect": "Allow",
-                            "Action": [
-                                "ssm:GetParameters",
-                                "secretsmanager:GetSecretValue",
-                                "kms:Decrypt"
-                            ],
-                            "Resource": "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${Cluster}/*"
-                        }
-                    ]
-                }
-            Roles:
-                - !Ref IAMRole
-            PolicyName: WebTaskExecution-ParameterStoreReadAccess
-    SSMParameter:
-        Type: "AWS::SSM::Parameter"
-        Properties:
-            Name: !Sub "/${Cluster}/NEXT_PUBLIC_UNSPLASH_ACCESS_KEY"
-            Type: String
-            Value: !Ref UnsplashAccessKey
-            DataType: text
-            Description: !Sub "${Cluster} env variables"
-            Tier: Standard
+        Type: "AWS::IAM::Role"
