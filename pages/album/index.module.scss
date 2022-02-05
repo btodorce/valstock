@@ -1,0 +1,58 @@
+$btnHeight: 1.85em;
+$btnWidth: 10em;
+
+.header {
+    .headerText {
+        color: var(--black);
+        text-align: center;
+        font: normal normal normal 32px/40px Lexend Deca;
+        letter-spacing: 0.64px;
+        color: #000000;
+        opacity: 1;
+    }
+    .headerParagraph {
+        color: var(--grey);
+        text-align: center;
+        font: normal normal normal 14px/18px Lexend Deca;
+        letter-spacing: 0px;
+        color: #9d9d9d;
+        opacity: 1;
+    }
+}
+.imageWrapper {
+    height: 400px;
+}
+.btn {
+    height: $btnHeight;
+    width: $btnWidth;
+    border: 2px solid #000000;
+    opacity: 1;
+    text-align: center;
+    font: normal normal 800 14px/18px Lexend Deca;
+    display: -moz-box;
+    letter-spacing: 0px;
+    opacity: 1;
+    text-align: center;
+    background-color: white;
+    margin: 0.5em;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+.btn:hover {
+    background-color: black;
+    color: white;
+}
+.btnSave {
+    background-color: black;
+    color: white;
+}
+.btnSave:hover {
+    background-color: white;
+    color: black;
+}
+.content {
+    display: grid;
+    width: 50%;
+    margin-left: 25%;
+    grid-template-columns: repeat(4, 5fr);
+}

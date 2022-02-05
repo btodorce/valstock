@@ -1,0 +1,16 @@
+.btn {
+  height: $btnHeight;
+  width: $btnWidth;
+  border: 2px solid #000000;
+  opacity: 1;
+  text-align: center;
+  font: normal normal 800 14px/18px Lexend Deca;
+  display: -moz-box;
+  letter-spacing: 0px;
+  opacity: 1;
+  text-align: center;
+}
+.btn:hover {
+  background-color: black;
+  color: white;
+}

@@ -1,0 +1,33 @@
+.headerText {
+	font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-800)
+		var(--unnamed-font-family-lexend-deca);
+	color: var(--black);
+	text-align: center;
+	font: normal normal 800 44px/28px Lexend Deca;
+	letter-spacing: -2.2px;
+	margin-bottom: 0;
+	padding-bottom: 0;
+	color: #000000;
+}
+.label {
+	font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-normal) 22px/28px
+		var(--unnamed-font-family-lexend-deca);
+	color: var(--black);
+	text-align: center;
+	font: normal normal normal Lexend Deca;
+	letter-spacing: 0.44px;
+	color: #000000;
+}
+.footer {
+	min-height: 23vh;
+	max-height: 23vh;
+	height: 23vh;
+	background-color: black;
+}
+.imageWrapper {
+	padding-top: 11em;
+    pointer-events: none;
+}
+.nonInteractable  {
+    pointer-events: none;
+}
