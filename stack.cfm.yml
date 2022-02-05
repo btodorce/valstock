@@ -225,13 +225,14 @@ Resources:
             ManagedPolicyArns:
                 - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
                 - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+                - !Ref ParameterStoreReadAccess
             Tags:
                 - Key: com.project
                   Value: valstock
                 - Key: com.project.service
                   Value: web
         Type: AWS::IAM::Role
-    IAMPolicy:
+    ParameterStoreReadAccess:
         Type: "AWS::IAM::Policy"
         Properties:
             PolicyDocument: !Sub |
@@ -250,8 +251,8 @@ Resources:
                     ]
                 }
             Roles:
-                - !Ref WebTaskExecutionRole
-            PolicyName: "${WebTaskExecutionRole}ParameterStoreReadAccess"
+                - !Ref IAMRole
+            PolicyName: WebTaskExecution-ParameterStoreReadAccess
     SSMParameter:
         Type: "AWS::SSM::Parameter"
         Properties:
@@ -259,4 +260,5 @@ Resources:
             Type: String
             Value: !Ref UnsplashAccessKey
             DataType: text
+            Description: !Sub "${Cluster} env variables"
             Tier: Standard
