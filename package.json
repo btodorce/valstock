@@ -6,7 +6,8 @@
         "build": "bash ./cd/build.sh",
         "start": "next start",
         "prettier": "npx prettier --check \"./**/*.@(tsx|ts|jsx|js)\" --write",
-        "lint": "npx next lint & pnpm run prettier "
+        "lint": "npx next lint & pnpm run prettier ",
+        "prepare": "husky install"
     },
     "dependencies": {
         "@babel/core": "7.17.0",
@@ -49,14 +50,10 @@
         "*.{jsx?,tsx?}": [
             "eslint --fix",
             "prettier --write"
-        ]
+        ],
+        "*.js": "eslint --cache --fix"
     },
     "engines": {
-        "npm": ">=6"
-    },
-    "husky": {
-        "hooks": {
-            "pre-push": "lint-staged && pnpm run build"
-        }
+        "pnpm": ">=6"
     }
 }
