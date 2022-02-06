@@ -1,9 +1,13 @@
 FROM node:16-alpine AS deps
 
 RUN apk add --no-cache libc6-compat
+
+ENV HUSKY_SKIP_INSTALL=1
+ENV HUSKY=0
+
 WORKDIR /app
-COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --prod --frozen-lockfile
+COPY package.json yarn.lock ./
+RUN yarn --frozen-lockfile --production
 
 FROM node:16-alpine AS builder
 WORKDIR /app

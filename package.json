@@ -6,11 +6,10 @@
         "build": "bash ./cd/build.sh",
         "start": "next start",
         "prettier": "npx prettier --check \"./**/*.@(tsx|ts|jsx|js)\" --write",
-        "lint": "npx next lint & pnpm run prettier ",
+        "lint": "npx next lint & yarn prettier ",
         "prepare": "husky install"
     },
     "dependencies": {
-        "@babel/core": "7.17.0",
         "@juggle/resize-observer": "3.3.1",
         "@react-spring/web": "^9.4.2",
         "classnames": "^2.3.1",
@@ -44,7 +43,8 @@
         "husky": "^7.0.4",
         "lint-staged": "12.3.3",
         "sass": "1.49.7",
-        "typescript": "4.5.5"
+        "typescript": "4.5.5",
+        "yarn": "latest"
     },
     "lint-staged": {
         "*.{jsx?,tsx?}": [
@@ -54,6 +54,6 @@
         "*.js": "eslint --cache --fix"
     },
     "engines": {
-        "pnpm": ">=6"
+        "yarn": ">=1"
     }
 }
