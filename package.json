@@ -3,7 +3,7 @@
     "private": true,
     "scripts": {
         "dev": "next dev",
-        "build": "bash ./cd/build.sh",
+        "build": "cd/build.sh",
         "start": "next start",
         "prettier": "npx prettier --check \"./**/*.@(tsx|ts|jsx|js)\" --write",
         "lint": "npx next lint & yarn prettier ",
