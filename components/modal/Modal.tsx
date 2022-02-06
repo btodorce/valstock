@@ -1,4 +1,4 @@
-import { useTranslation } from "../../hooks";
+import { useAlbums, useTranslation } from "../../hooks";
 import * as Yup from "yup";
 import { Field, FieldArray, Form, Formik } from "formik";
 import { Button } from "..";
@@ -51,6 +51,8 @@ export const Modal = ({ albums, visible, onSave, onClose }: P): JSX.Element => {
         album: []
     };
 
+    console.log("albums", albums);
+
     return (
         <div
             className={classnames(
@@ -98,6 +100,13 @@ export const Modal = ({ albums, visible, onSave, onClose }: P): JSX.Element => {
                                                 ModalState.add
                                             )
                                         }
+                                        style={
+                                            !albums
+                                                ? {
+                                                      pointerEvents: "none"
+                                                  }
+                                                : {}
+                                        }
                                         className={
                                             values.action === ModalState.add
                                                 ? ""
@@ -121,7 +130,7 @@ export const Modal = ({ albums, visible, onSave, onClose }: P): JSX.Element => {
                                     <FieldArray
                                         name="album"
                                         render={arrayHelpers => (
-                                            <div className={styles.listWrapper}>
+                                            <div className={styles.content}>
                                                 <ul>
                                                     {albums?.map(
                                                         (album, key) => (
@@ -152,12 +161,14 @@ export const Modal = ({ albums, visible, onSave, onClose }: P): JSX.Element => {
                                         )}
                                     />
                                 )}
-                                <Button type="reset">
-                                    {_("messages.cancel")}
-                                </Button>
-                                <Button disabled={!isValid} type="submit">
-                                    {_("messages.save")}
-                                </Button>
+                                <div>
+                                    <Button type="reset">
+                                        {_("messages.cancel")}
+                                    </Button>
+                                    <Button disabled={!isValid} type="submit">
+                                        {_("messages.save")}
+                                    </Button>
+                                </div>
                             </Form>
                         )}
                     </Formik>

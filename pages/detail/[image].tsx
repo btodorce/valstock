@@ -1,8 +1,8 @@
 import { useTranslation, useAlbums, usePhotos } from "../../hooks";
 import { InferGetServerSidePropsType, NextPage } from "next";
 import { useRouter } from "next/router";
-import styles from "./index.module.scss";
-import { Layout, Button, Modal } from "../../components";
+import styles from "./image.module.scss";
+import { Layout, Button, CreateModal } from "../../components";
 import moment from "moment";
 import { saveAs } from "file-saver";
 import { useState } from "react";
@@ -24,18 +24,20 @@ export const getServerSideProps = async ({
 }) => {
     const { image } = query;
     const imageId = typeof image === "object" ? image[0] : image;
-
     const photo = (await unsplash.photos.get({ photoId: imageId })).response;
+
     return { props: { photo } };
 };
 
 const DetailPage: NextPage<P> = ({
     photo
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+    const [svgProp] = useState({
+        height: "30px",
+        width: "30px"
+    });
     const router = useRouter();
     const { _ } = useTranslation();
-    const { albums, save: createNewAlbum } = useAlbums();
-    const { photos, save } = usePhotos();
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [ref, { height: viewHeight }] = useMeasure({
         polyfill: ResizeObserver
@@ -56,28 +58,13 @@ const DetailPage: NextPage<P> = ({
                 {isModalVisible && (
                     <a.div style={{ overflow: "hidden", ...animProps }}>
                         <div ref={ref}>
-                            <Modal
+                            <CreateModal
+                                photo={photo}
                                 visible={isModalVisible}
-                                onSave={data => {
-                                    if (data?.action === "create") {
-                                        createNewAlbum(data.title);
-                                        save(photo, data.title);
-                                    } else {
-                                        data?.album?.forEach?.(album => {
-                                            save(photo, album);
-                                        });
-                                    }
-                                }}
                                 onClose={toggleModal}
-                                albums={albums}
                             />
                         </div>
                     </a.div>
-                )}
-                {!photo && (
-                    <div>
-                        <h2>{_("messages.loading")}</h2>
-                    </div>
                 )}
                 {photo && (
                     <div className={styles.container}>
@@ -91,14 +78,8 @@ const DetailPage: NextPage<P> = ({
                             >
                                 {_("messages.add-to-album")}
                                 <div className={styles.innerImage}>
-                                    <svg
-                                        pointerEvents="none"
-                                        width="10px"
-                                        height="10px"
-                                    >
+                                    <svg pointerEvents="none" {...svgProp}>
                                         <path
-                                            id="Icon_Add_"
-                                            data-name="Icon (Add)"
                                             d="M-3.507-2.954V-5.026H3.507v2.072ZM-1.113-.532V-7.406H1.113V-.532Z"
                                             transform="translate(3.507 7.406)"
                                         />
@@ -112,28 +93,36 @@ const DetailPage: NextPage<P> = ({
                                 )}
                                 onClick={handleDownload}
                             >
-                                {_("messages.download")}
+                                <p>{_("messages.download")}</p>
                             </Button>
                         </div>
-                        <img
-                            src={photo?.urls?.regular}
-                            alt={photo?.description}
-                        />
-                        <p className={styles.hParagraph}>
-                            {_("messages.photos.uploaded-by")}
-                        </p>
-                        <p
-                            className={styles.username}
-                        >{`${photo?.user?.first_name} ${photo?.user?.last_name}`}</p>
-                        <p className={styles.createdDate}>
-                            {moment(photo?.created_at).format("Do, MMMM YYYY")}
-                        </p>
-                        <Button
-                            className={classnames(styles.btn, styles.btnGoBack)}
-                            onClick={() => router.back()}
-                        >
-                            {_("messages.go-back")}
-                        </Button>
+                        <div className={styles.content}>
+                            <img
+                                className={styles.displayImage}
+                                src={photo?.urls?.regular}
+                                alt={photo?.description}
+                            />
+                            <p className={styles.hParagraph}>
+                                {_("messages.photos.uploaded-by")}
+                            </p>
+                            <p
+                                className={styles.username}
+                            >{`${photo?.user?.first_name} ${photo?.user?.last_name}`}</p>
+                            <p className={styles.createdDate}>
+                                {moment(photo?.created_at).format(
+                                    "Do, MMMM YYYY"
+                                )}
+                            </p>
+                            <Button
+                                className={classnames(
+                                    styles.btn,
+                                    styles.btnGoBack
+                                )}
+                                onClick={() => router.back()}
+                            >
+                                {_("messages.go-back")}
+                            </Button>
+                        </div>
                     </div>
                 )}
             </div>

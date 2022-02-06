@@ -9,17 +9,19 @@
     align-items: baseline;
     text-align: center;
     display: grid;
-    .text {
-        padding: 0%;
-        color: white;
-        margin: auto;
-        display: inline-flex;
-    }
-    .wrapper {
-        padding: 0.5em;
-        margin: auto;
-        width: 65%;
-    }
+}
+
+.text {
+    padding: 0%;
+    color: white;
+    margin: auto;
+    display: inline-flex;
+}
+
+.wrapper {
+    padding: 0.5em;
+    margin: auto;
+    width: 80%;
 }
 
 .container {
@@ -29,8 +31,9 @@
     justify-content: center;
     -moz-box-align: center;
     align-items: center;
+    margin-top: 0%;
     padding: 1%;
-    height: 72vh;
+    min-height: 72vh;
 }
 
 .footer {
@@ -39,6 +42,7 @@
     height: 23vh;
     background-color: black;
 }
+
 .btn {
     border: 2px solid #ffffff;
     background-color: black;

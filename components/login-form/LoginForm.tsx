@@ -14,6 +14,41 @@ interface FormValues {
     email: string;
     password: string;
 }
+const renderInputLabel = ({ error }) => (
+    <div className="formError">
+        <p>{error}</p>
+    </div>
+);
+
+const renderFormStyles = (className: string, { touched, error }) =>
+    classNames(className, touched && error ? styles.formError : "");
+
+const renderFormField = (
+    name: string,
+    placeholder: string,
+    type: HTMLInputTypeAttribute,
+    { field, touched, error }
+) => (
+    <div className={styles.inputWrapper}>
+        <p>
+            <label className={styles.label}>{name}</label>
+        </p>
+        <input
+            className={renderFormStyles(styles.inputField, {
+                touched,
+                error
+            })}
+            placeholder={placeholder}
+            type={type}
+            {...field}
+        />
+        {touched &&
+            error &&
+            renderInputLabel({
+                error
+            })}
+    </div>
+);
 
 export const LoginForm: FC<P> = ({ onLogin, children, ...props }) => {
     const { _ } = useTranslation();
@@ -27,42 +62,6 @@ export const LoginForm: FC<P> = ({ onLogin, children, ...props }) => {
         email: "",
         password: ""
     };
-
-    const renderInputLabel = ({ error }) => (
-        <div className="formError">
-            <p>{error}</p>
-        </div>
-    );
-
-    const renderFormStyles = (className: string, { touched, error }) =>
-        classNames(className, touched && error ? styles.formError : "");
-
-    const renderFormField = (
-        name: string,
-        placeholder: string,
-        type: HTMLInputTypeAttribute,
-        { field, meta: { touched, error } }
-    ) => (
-        <div className={styles.inputWrapper}>
-            <p>
-                <label className={styles.label}>{name}</label>
-            </p>
-            <input
-                className={renderFormStyles(styles.inputField, {
-                    touched,
-                    error
-                })}
-                placeholder={placeholder}
-                type={type}
-                {...field}
-            />
-            {touched &&
-                error &&
-                renderInputLabel({
-                    error
-                })}
-        </div>
-    );
 
     return (
         <div style={props} className={styles.loginForm}>
@@ -80,59 +79,24 @@ export const LoginForm: FC<P> = ({ onLogin, children, ...props }) => {
                         <Form>
                             {children}
                             <Field name="email">
-                                {({ field, meta: { touched, error } }) => (
-                                    <div className={styles.inputWrapper}>
-                                        <p>
-                                            <label className={styles.label}>
-                                                {_("login.username")}
-                                            </label>
-                                        </p>
-                                        <input
-                                            className={renderFormStyles(
-                                                styles.inputField,
-                                                { touched, error }
-                                            )}
-                                            placeholder={_(
-                                                "placeholder.username"
-                                            )}
-                                            type="text"
-                                            {...field}
-                                        />
-                                        {touched &&
-                                            error &&
-                                            renderInputLabel({
-                                                error
-                                            })}
-                                    </div>
-                                )}
+                                {({ field, meta: { touched, error } }) =>
+                                    renderFormField(
+                                        _("login.username"),
+                                        _("placeholder.username"),
+                                        "text",
+                                        { field, touched, error }
+                                    )
+                                }
                             </Field>
                             <Field name="password">
-                                {({ field, meta: { touched, error } }) => (
-                                    <div className={styles.inputWrapper}>
-                                        <p>
-                                            <label className={styles.label}>
-                                                {_("login.password")}
-                                            </label>{" "}
-                                        </p>
-                                        <input
-                                            className={renderFormStyles(
-                                                styles.inputField,
-                                                { touched, error }
-                                            )}
-                                            type="password"
-                                            autoFocus
-                                            placeholder={_(
-                                                "placeholder.password"
-                                            )}
-                                            {...field}
-                                        />
-                                        {touched &&
-                                            error &&
-                                            renderInputLabel({
-                                                error
-                                            })}
-                                    </div>
-                                )}
+                                {({ field, meta: { touched, error } }) =>
+                                    renderFormField(
+                                        _("login.password"),
+                                        _("placeholder.password"),
+                                        "password",
+                                        { field, touched, error }
+                                    )
+                                }
                             </Field>
                             <Button
                                 type="submit"

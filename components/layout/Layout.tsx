@@ -30,7 +30,7 @@ export const Layout: FC<P> = ({ footer, children }) => {
                     </Link>
                     {isDesktopOrLaptop && albums?.length && (
                         <div className={styles.btn}>
-                            <Dropdown title="My Albums">
+                            {/* <Dropdown title="My Albums">
                                 {albums?.map(({ name }, key) => {
                                     return (
                                         <Link
@@ -42,7 +42,7 @@ export const Layout: FC<P> = ({ footer, children }) => {
                                         </Link>
                                     );
                                 })}
-                            </Dropdown>
+                            </Dropdown> */}
                         </div>
                     )}
                 </span>

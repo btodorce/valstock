@@ -1,4 +1,5 @@
 import _ from "lodash";
+import Link from "next/link";
 import { FC, ImgHTMLAttributes, useState } from "react";
 import { DetailedHTMLProps } from "react";
 import type { Image } from "../../types";
@@ -20,26 +21,28 @@ export const DisplayImage: FC<P & ImageProps> = ({
     children,
     ...rest
 }): JSX.Element => {
-    const [isVisible, setIsVisible] = useState(false);
+    const [isVisible, setIsVisible] = useState(true);
 
     const handleVisibilityChange = () => setIsVisible(x => !x);
 
     return (
-        <div
-            className={styles.container}
-            onMouseOver={handleVisibilityChange}
-            onMouseOut={handleVisibilityChange}
-        >
-            <a href={href}>
-                <img
-                    src={image?.urls?.small}
-                    key={image.id}
-                    alt={image.description}
-                    loading="lazy"
-                    {...rest}
-                />
-            </a>
-            {isVisible && <div className={styles.footer}>{children}</div>}
-        </div>
+        <>
+            <div
+                className={styles.container}
+                onMouseOver={handleVisibilityChange}
+                onMouseOut={handleVisibilityChange}
+            >
+                <Link passHref href={href}>
+                    <img
+                        src={image?.urls?.small}
+                        key={image.id}
+                        alt={image.description}
+                        loading="lazy"
+                        {...rest}
+                    />
+                </Link>
+                {isVisible && <div className={styles.footer}></div>}
+            </div>
+        </>
     );
 };
