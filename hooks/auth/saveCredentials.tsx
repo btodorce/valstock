@@ -1,7 +1,7 @@
-export function saveCredentials(
+export const saveCredentials = (
     username: string,
     password: string
-): Promise<CredentialType | null> {
+): Promise<CredentialType | null> => {
     let result: Promise<CredentialType | null>;
     if (window !== undefined) {
         const isSupported = !!(
@@ -26,5 +26,5 @@ export function saveCredentials(
     }
 
     return result;
-}
+};
 export default saveCredentials;

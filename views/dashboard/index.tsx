@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Layout, DisplayImage } from "../../components";
 import { Image as ImageType } from "../../types";
 import styles from "./index.module.scss";
+import config from "../../app.json";
 
 const Dashboard: NextPage = () => {
     const routePrefix = "detail";

@@ -1,21 +1,39 @@
 import { unsplash } from "../util";
-import { NextPage } from "next";
+import { InferGetServerSidePropsType, NextPage } from "next";
 import type { Image } from "../types";
 import { DisplayImage, Layout } from "../components";
 import styles from "../views/dashboard/index.module.scss";
+import config from "../app.json";
 
 interface P {
     photos: Image[];
     count: number;
 }
 
-const Index: NextPage<P> = ({ photos, count }) => {
+const defaultParams = {
+    page: 1,
+    perPage: 30
+};
+
+export const getServerSideProps = async () => {
+    const { total, results } = (await unsplash.photos.list(defaultParams))
+        .response;
+    const count = total;
+    const photos = results;
+
+    return { props: { photos, count } };
+};
+
+const Index: NextPage<P> = ({
+    photos,
+    count
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const routePrefix = "detail";
 
     return (
         <Layout>
             <div className={styles.container}>
-                {photos?.map((image: Image, key) => (
+                {photos?.map((image: Image) => (
                     <DisplayImage
                         image={image}
                         key={image.id}
@@ -26,17 +44,5 @@ const Index: NextPage<P> = ({ photos, count }) => {
         </Layout>
     );
 };
-
-export async function getServerSideProps(context) {
-    const params = {
-        page: 1,
-        perPage: 30
-    };
-    const data = (await unsplash.photos.list(params)).response;
-    const count = data.total;
-    const photos = data.results;
-
-    return { props: { photos, count } };
-}
 
 export default Index;

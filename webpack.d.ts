@@ -5,3 +5,10 @@ declare interface Window {
 declare interface Navigator {
     credentials: any;
 }
+
+declare interface Config {
+    title: string;
+    route: {
+        singlePhoto: string;
+    };
+}

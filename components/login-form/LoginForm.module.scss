@@ -1,34 +1,51 @@
 .container {
-	background: var(--white) 0% 0% no-repeat padding-box;
-	border: 2px solid var(--black);
-	background: #ffffff 0% 0% no-repeat padding-box;
-	border: 2px solid #000000;
-	opacity: 1;
-	min-width: 2em;
-	max-width: 20em;
-	font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-normal)
-		var(--unnamed-font-size-16) / var(--unnamed-line-spacing-20)
-		var(--unnamed-font-family-lexend-deca);
-	letter-spacing: var(--unnamed-character-spacing-0-32);
-	color: var(--grey);
-	font: normal normal normal 16px/20px Lexend Deca;
-	letter-spacing: 0.32px;
-	color: #9d9d9d;
-	opacity: 1;
-	text-align: center;
+    background: var(--white) 0% 0% no-repeat padding-box;
+    border: 2px solid var(--black);
+    background: #ffffff 0% 0% no-repeat padding-box;
+    border: 2px solid #000000;
+    opacity: 1;
+    min-width: 2em;
+    max-width: 20em;
+    color: var(--grey);
+    font: normal normal normal 16px/20px Lexend Deca;
+    letter-spacing: 0.32px;
+    color: #9d9d9d;
+    opacity: 1;
+    text-align: center;
 }
 .label {
-	font: var(--unnamed-font-style-normal) normal var(--unnamed-font-weight-800)
-		var(--unnamed-font-size-14) / var(--unnamed-line-spacing-18)
-		var(--unnamed-font-family-lexend-deca);
-	letter-spacing: var(--unnamed-character-spacing-0);
-	color: var(--black);
-	text-align: center;
-	font: normal normal 800 14px/18px Lexend Deca;
-	letter-spacing: 0px;
-	color: #000000;
-	text-transform: uppercase;
-	opacity: 1;
+    color: var(--black);
+    text-align: center;
+    font: normal normal 800 14px/18px Lexend Deca;
+    letter-spacing: 0px;
+    color: #000000;
+    text-transform: uppercase;
+    opacity: 1;
 }
-.wrapper {
+
+.formError {
+    color: red;
+    border: 2px solid red;
+}
+.inputField {
+    text-align: left;
+    font: normal normal normal 16px/20px Lexend Deca;
+    letter-spacing: 0.32px;
+    color: #9d9d9d !important;
+    background: white 0% 0% no-repeat padding-box;
+    border: 2px solid #000000;
+    opacity: 1;
+    margin: 0.5em;
+    height: 3em;
+    text-align: left;
+    padding: 1em;
+    width: 19em;
+}
+.loginForm {
+    min-height: 60%;
+    margin-top: 5%;
+}
+.inputWrapper {
+    margin: 1%;
+    min-height: 5em;
 }

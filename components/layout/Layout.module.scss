@@ -1,51 +1,51 @@
 .page {
-  height: 100vh;
+    height: 100vh;
+    overflow: inherit;
+    background: black;
 }
 
 .header {
-  background-color: black;
-  align-items: baseline;
-  text-align: center;
-  display: grid;
-  .text {
-    padding: 0%;
-    color: white;
-    margin: auto;
-    display: inline-flex;
-  }
-  .wrapper {
-    padding: 0.5em;
-    margin: auto;
-    width: 65%;
-  }
+    background-color: black;
+    align-items: baseline;
+    text-align: center;
+    display: grid;
+    .text {
+        padding: 0%;
+        color: white;
+        margin: auto;
+        display: inline-flex;
+    }
+    .wrapper {
+        padding: 0.5em;
+        margin: auto;
+        width: 65%;
+    }
 }
 
 .container {
-  background-color: white;
-  height: 71.5vh;
-  text-align: center;
-  margin-top: 2em;
-  -moz-box-pack: center;
-  justify-content: center;
-  -moz-box-align: center;
-  align-items: center;
-  margin: 5%;
-  max-width: 90%;
+    background-color: white;
+    text-align: center;
+    -moz-box-pack: center;
+    justify-content: center;
+    -moz-box-align: center;
+    align-items: center;
+    padding: 1%;
+    height: 72vh;
 }
 
 .footer {
-  min-height: 23vh;
-  max-height: 23vh;
-  height: 23vh;
-  background-color: black;
+    min-height: 23vh;
+    max-height: 23vh;
+    height: 23vh;
+    background-color: black;
 }
 .btn {
-  border: 2px solid #ffffff;
-  background-color: black;
-  color: white;
-  opacity: 1;
-  display: -moz-inline-box;
-  display: inline-flex;
-  margin: 0 auto;
-  float: right;
+    border: 2px solid #ffffff;
+    background-color: black;
+    color: white;
+    opacity: 1;
+    display: -moz-inline-box;
+    display: inline-flex;
+    margin: 0 auto;
+    float: right;
 }

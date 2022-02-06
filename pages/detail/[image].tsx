@@ -1,5 +1,5 @@
 import { useTranslation, useAlbums, usePhotos } from "../../hooks";
-import { NextPage } from "next";
+import { InferGetServerSidePropsType, NextPage } from "next";
 import { useRouter } from "next/router";
 import styles from "./index.module.scss";
 import { Layout, Button, Modal } from "../../components";
@@ -11,12 +11,27 @@ import useMeasure from "react-use-measure";
 import classnames from "classnames";
 import { unsplash } from "../../util";
 import type { Image as ImageType } from "../../types";
+import { ParsedUrlQuery } from "querystring";
 
 interface P {
     photo: ImageType;
 }
 
-const DetailPage: NextPage<P> = ({ photo }) => {
+export const getServerSideProps = async ({
+    query
+}: {
+    query: ParsedUrlQuery;
+}) => {
+    const { image } = query;
+    const imageId = typeof image === "object" ? image[0] : image;
+
+    const photo = (await unsplash.photos.get({ photoId: imageId })).response;
+    return { props: { photo } };
+};
+
+const DetailPage: NextPage<P> = ({
+    photo
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const router = useRouter();
     const { _ } = useTranslation();
     const { albums, save: createNewAlbum } = useAlbums();
@@ -125,12 +140,5 @@ const DetailPage: NextPage<P> = ({ photo }) => {
         </Layout>
     );
 };
-export async function getServerSideProps(context) {
-    const { image } = context.query;
-    const imageId = typeof image === "object" ? image[0] : image;
-
-    const photo = (await unsplash.photos.get({ photoId: imageId })).response;
-    return { props: { photo } };
-}
 
 export default DetailPage;

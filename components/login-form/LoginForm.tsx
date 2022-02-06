@@ -2,47 +2,70 @@ import { Button } from "../";
 import { Formik, Form, Field } from "formik";
 import { useTranslation } from "../../hooks";
 import styles from "./LoginForm.module.scss";
-import { FC, useState } from "react";
-import { object, SchemaOf, string } from "yup";
+import { FC, HTMLInputTypeAttribute } from "react";
+import * as Yup from "yup";
+import classNames from "classnames";
 
 interface P {
-    className?: "string";
     onLogin: (username: string, password: string) => Promise<void>;
 }
 
-enum InputField {
-    password = "password",
-    default = "text"
+interface FormValues {
+    email: string;
+    password: string;
 }
 
-export const LoginForm: FC<P> = ({
-    className,
-    onLogin,
-    children,
-    ...props
-}) => {
+export const LoginForm: FC<P> = ({ onLogin, children, ...props }) => {
     const { _ } = useTranslation();
-    const [inputFieldType, setInputFieldType] = useState<InputField>(
-        InputField.default
-    );
 
-    const validationSchema = object({
-        email: string().email().required(_("login.username-required")),
-        password: string().required(_("login.password-required"))
+    const validationSchema: Yup.SchemaOf<FormValues> = Yup.object({
+        email: Yup.string().email().required(_("login.username-required")),
+        password: Yup.string().required(_("login.password-required")).min(1)
     });
 
-    const defaultFormikValues = {
-        email: "val.stockski@valtech.com",
+    const defaultFormikValues: FormValues = {
+        email: "",
         password: ""
     };
 
-    const handleInputFieldClick = () =>
-        inputFieldType === InputField.default
-            ? setInputFieldType(InputField.password)
-            : setInputFieldType(InputField.default);
+    const renderInputLabel = ({ error }) => (
+        <div className="formError">
+            <p>{error}</p>
+        </div>
+    );
+
+    const renderFormStyles = (className: string, { touched, error }) =>
+        classNames(className, touched && error ? styles.formError : "");
+
+    const renderFormField = (
+        name: string,
+        placeholder: string,
+        type: HTMLInputTypeAttribute,
+        { field, meta: { touched, error } }
+    ) => (
+        <div className={styles.inputWrapper}>
+            <p>
+                <label className={styles.label}>{name}</label>
+            </p>
+            <input
+                className={renderFormStyles(styles.inputField, {
+                    touched,
+                    error
+                })}
+                placeholder={placeholder}
+                type={type}
+                {...field}
+            />
+            {touched &&
+                error &&
+                renderInputLabel({
+                    error
+                })}
+        </div>
+    );
 
     return (
-        <div className={className ?? ""} style={props}>
+        <div style={props} className={styles.loginForm}>
             <Formik
                 initialValues={defaultFormikValues}
                 enableReinitialize={true}
@@ -52,68 +75,69 @@ export const LoginForm: FC<P> = ({
                     onLogin(email, password).then(() => resetForm());
                 }}
             >
-                {({ setFieldValue, resetForm, values }) => (
+                {({ isValid, isSubmitting }) => (
                     <div className={styles.wrapper}>
                         <Form>
                             {children}
                             <Field name="email">
-                                {({
-                                    field,
-                                    form: { touched, errors },
-                                    meta
-                                }) => (
-                                    <div>
+                                {({ field, meta: { touched, error } }) => (
+                                    <div className={styles.inputWrapper}>
                                         <p>
                                             <label className={styles.label}>
                                                 {_("login.username")}
                                             </label>
                                         </p>
                                         <input
-                                            className={styles.container}
+                                            className={renderFormStyles(
+                                                styles.inputField,
+                                                { touched, error }
+                                            )}
+                                            placeholder={_(
+                                                "placeholder.username"
+                                            )}
                                             type="text"
                                             {...field}
                                         />
-                                        {meta.touched && meta.error && (
-                                            <div className="error">
-                                                {meta.error}
-                                            </div>
-                                        )}
+                                        {touched &&
+                                            error &&
+                                            renderInputLabel({
+                                                error
+                                            })}
                                     </div>
                                 )}
                             </Field>
                             <Field name="password">
-                                {({
-                                    field,
-                                    form: { touched, errors },
-                                    meta
-                                }) => (
-                                    <div>
+                                {({ field, meta: { touched, error } }) => (
+                                    <div className={styles.inputWrapper}>
                                         <p>
                                             <label className={styles.label}>
                                                 {_("login.password")}
                                             </label>{" "}
                                         </p>
                                         <input
-                                            className={styles.container}
-                                            type={inputFieldType}
+                                            className={renderFormStyles(
+                                                styles.inputField,
+                                                { touched, error }
+                                            )}
+                                            type="password"
                                             autoFocus
-                                            onClick={() =>
-                                                handleInputFieldClick()
-                                            }
                                             placeholder={_(
-                                                "login.password-default"
+                                                "placeholder.password"
                                             )}
                                             {...field}
                                         />
-                                        {meta.touched && meta.error && (
-                                            <div className="error">
-                                                {meta.error}
-                                            </div>
-                                        )}
+                                        {touched &&
+                                            error &&
+                                            renderInputLabel({
+                                                error
+                                            })}
                                     </div>
                                 )}
                             </Field>
-                            <Button type="submit">
+                            <Button
+                                type="submit"
+                                disabled={!isValid || isSubmitting}
+                            >
                                 {_("login.button.submit")}
                             </Button>
                         </Form>
