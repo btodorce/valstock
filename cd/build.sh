@@ -3,7 +3,7 @@ set -e
 APP_NAME="valstock"
 REPO="demo"
 USER="btodorce"
-AWS_REGION=$AWS_REGION
+AWS_REGION="eu-west-3"
 AWS_ACCOUNT_ID=$AWS_ACCOUNT_ID
 
 docker build . -t "${APP_NAME}:latest"

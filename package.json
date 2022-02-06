@@ -1,6 +1,7 @@
 {
     "name": "valstock",
     "private": false,
+    "license": "MIT",
     "scripts": {
         "dev": "next dev",
         "build": "cd/build.sh",
