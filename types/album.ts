@@ -1,3 +1,3 @@
 export type Album = {
-  name: string
-}
+    name: string;
+};

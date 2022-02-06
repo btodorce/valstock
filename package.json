@@ -5,13 +5,12 @@
         "dev": "next dev",
         "build": "bash ./cd/build.sh",
         "start": "next start",
-        "lint": "next lint"
+        "prettier": "npx prettier --check \"./**/*.@(tsx|ts|jsx|js)\" --write",
+        "lint": "npx next lint & pnpm run prettier "
     },
     "dependencies": {
         "@juggle/resize-observer": "3.3.1",
         "@react-spring/web": "^9.4.2",
-        "animate.css": "^4.1.1",
-        "animate.css-react": "1.1.0",
         "classnames": "^2.3.1",
         "core-js": "^3.6.5",
         "file-saver": "^2.0.5",
@@ -24,7 +23,6 @@
         "react": "17.0.2",
         "react-dom": "17.0.2",
         "react-i18next": "^11.15.3",
-        "react-infinite-scroller": "1.2.4",
         "react-responsive": "^9.0.0-beta.6",
         "react-use-measure": "^2.1.1",
         "recoil": "^0.5.2",
@@ -32,7 +30,8 @@
         "regenerator-runtime": "0.13.7",
         "tslib": "^2.0.0",
         "unsplash-js": "^7.0.15",
-        "yup": "^0.32.11"
+        "yup": "^0.32.11",
+        "@babel/core": "7.17.0"
     },
     "devDependencies": {
         "@testing-library/react": "12.1.2",
@@ -43,5 +42,19 @@
         "eslint-config-next": "12.0.10",
         "sass": "1.49.7",
         "typescript": "4.5.5"
+    },
+    "lint-staged": {
+        "*.{jsx?,tsx?}": [
+            "eslint --fix",
+            "prettier --write"
+        ]
+    },
+    "engines": {
+        "npm": ">=6"
+    },
+    "husky": {
+        "hooks": {
+            "pre-push": "lint-staged && pnpm run build"
+        }
     }
 }

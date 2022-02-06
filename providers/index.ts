@@ -1,2 +1,2 @@
-export * from "./Auth/AuthProvider"
-export * from "./Unsplash/UnsplashProvider"
+export * from "./Auth/AuthProvider";
+export * from "./Unsplash/UnsplashProvider";
