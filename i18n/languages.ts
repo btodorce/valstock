@@ -3,5 +3,5 @@ import mk from "./locales/mk.json";
 
 export const languages = {
     en: { common: en.en },
-    mk: { common: mk.mk },
+    mk: { common: mk.mk }
 };

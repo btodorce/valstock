@@ -5,7 +5,7 @@ const { persistAtom } = recoilPersist();
 export const userAtom = atom({
     key: "user",
     default: {
-        me: null,
+        me: null
     },
-    effects_UNSTABLE: [persistAtom],
+    effects_UNSTABLE: [persistAtom]
 });

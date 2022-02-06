@@ -18,7 +18,7 @@ const AlbumPage: NextPage = () => {
     const { album: current } = useFindOneAlbum(albumName);
     const { photos } = usePhotos();
     const albumPhotos = useMemo(() => {
-        return photos?.filter?.((p) => p.album === current.name);
+        return photos?.filter?.(p => p.album === current.name);
     }, [current.name, photos]);
 
     console.log("album", current);
@@ -39,7 +39,7 @@ const AlbumPage: NextPage = () => {
                         {albumPhotos?.map?.((item, key) => (
                             <DisplayImage
                                 style={{
-                                    padding: 10,
+                                    padding: 10
                                 }}
                                 key={key}
                                 image={item?.photo}

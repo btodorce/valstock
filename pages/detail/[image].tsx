@@ -23,17 +23,17 @@ const DetailPage: NextPage<P> = ({ photo }) => {
     const { photos, save } = usePhotos();
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [ref, { height: viewHeight }] = useMeasure({
-        polyfill: ResizeObserver,
+        polyfill: ResizeObserver
     });
 
     const handleDownload = () => saveAs(photo?.links?.download, "image.jpg");
 
-    const toggleModal = () => setIsModalVisible((x) => !x);
+    const toggleModal = () => setIsModalVisible(x => !x);
 
     const animProps = useSpring({
         height: isModalVisible ? viewHeight : 0,
         config: { tension: 5, friction: 10, clamp: true, duration: 300 },
-        opacity: isModalVisible ? 1 : 0,
+        opacity: isModalVisible ? 1 : 0
     });
     return (
         <Layout>
@@ -43,12 +43,12 @@ const DetailPage: NextPage<P> = ({ photo }) => {
                         <div ref={ref}>
                             <Modal
                                 visible={isModalVisible}
-                                onSave={(data) => {
+                                onSave={data => {
                                     if (data?.action === "create") {
                                         createNewAlbum(data.title);
                                         save(photo, data.title);
                                     } else {
-                                        data?.album?.forEach?.((album) => {
+                                        data?.album?.forEach?.(album => {
                                             save(photo, album);
                                         });
                                     }

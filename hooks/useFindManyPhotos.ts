@@ -11,7 +11,7 @@ export const useFindManyPhotos = (page: number, limit: number) => {
     const params = useMemo(() => {
         return {
             page: page ?? 1,
-            perPage: limit ?? 30,
+            perPage: limit ?? 30
         };
     }, [page, limit]);
 
@@ -33,7 +33,7 @@ export const useFindManyPhotos = (page: number, limit: number) => {
     return {
         photos,
         count,
-        error,
+        error
     };
 };
 

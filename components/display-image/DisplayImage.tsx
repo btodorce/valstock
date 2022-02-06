@@ -22,7 +22,7 @@ export const DisplayImage: FC<P & ImageProps> = ({
 }): JSX.Element => {
     const [isVisible, setIsVisible] = useState(false);
 
-    const handleVisibilityChange = () => setIsVisible((x) => !x);
+    const handleVisibilityChange = () => setIsVisible(x => !x);
 
     return (
         <div

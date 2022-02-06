@@ -3,33 +3,37 @@ import { Formik, Form, Field } from "formik";
 import { useTranslation } from "../../hooks";
 import styles from "./LoginForm.module.scss";
 import { FC, useState } from "react";
-import { useAuth } from "../../providers";
 import { object, SchemaOf, string } from "yup";
 
 interface P {
     className?: "string";
+    onLogin: (username: string, password: string) => Promise<void>;
 }
 
 enum InputField {
     password = "password",
-    default = "text",
+    default = "text"
 }
 
-export const LoginForm: FC<P> = ({ className, children, ...props }) => {
+export const LoginForm: FC<P> = ({
+    className,
+    onLogin,
+    children,
+    ...props
+}) => {
     const { _ } = useTranslation();
     const [inputFieldType, setInputFieldType] = useState<InputField>(
         InputField.default
     );
-    const { me, login } = useAuth();
 
     const validationSchema = object({
         email: string().email().required(_("login.username-required")),
-        password: string().required(_("login.password-required")),
+        password: string().required(_("login.password-required"))
     });
 
     const defaultFormikValues = {
         email: "val.stockski@valtech.com",
-        password: _("login.password-default"),
+        password: ""
     };
 
     const handleInputFieldClick = () =>
@@ -45,24 +49,7 @@ export const LoginForm: FC<P> = ({ className, children, ...props }) => {
                 validationSchema={validationSchema}
                 onSubmit={(values, { resetForm }) => {
                     const { email, password } = values;
-                    login(email, password);
-                    // if (typeof window !== 'undefined' || typeof navigator !== "undefined") {
-                    //     // saveCredentials(values.email, values.password)
-                    // }
-                    // if ("PasswordCredential" in window) {
-                    //     const credential = new PasswordCredential({
-                    //       id: values.email,
-                    //       name: values.email, // In case of a login, the name comes from the server.
-                    //       password: values.password
-                    //     });
-
-                    //     navigator.credentials.store(credential).then(() => {
-                    //       console.info("Credential stored in the user agent's credential manager.");
-                    //     }, (err) => {
-                    //       console.error("Error while storing the credential: ", err);
-                    //     });
-                    //   }
-                    resetForm();
+                    onLogin(email, password).then(() => resetForm());
                 }}
             >
                 {({ setFieldValue, resetForm, values }) => (
@@ -73,7 +60,7 @@ export const LoginForm: FC<P> = ({ className, children, ...props }) => {
                                 {({
                                     field,
                                     form: { touched, errors },
-                                    meta,
+                                    meta
                                 }) => (
                                     <div>
                                         <p>
@@ -98,7 +85,7 @@ export const LoginForm: FC<P> = ({ className, children, ...props }) => {
                                 {({
                                     field,
                                     form: { touched, errors },
-                                    meta,
+                                    meta
                                 }) => (
                                     <div>
                                         <p>
@@ -109,6 +96,7 @@ export const LoginForm: FC<P> = ({ className, children, ...props }) => {
                                         <input
                                             className={styles.container}
                                             type={inputFieldType}
+                                            autoFocus
                                             onClick={() =>
                                                 handleInputFieldClick()
                                             }

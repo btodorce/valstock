@@ -14,7 +14,7 @@ interface P {
 export const Layout: FC<P> = ({ footer, children }) => {
     const { albums } = useAlbums();
     const isDesktopOrLaptop = useMediaQuery({
-        query: "(min-width: 1224px)",
+        query: "(min-width: 1224px)"
     });
 
     return (
@@ -28,7 +28,7 @@ export const Layout: FC<P> = ({ footer, children }) => {
                             alt="valstock"
                         />
                     </Link>
-                    {isDesktopOrLaptop && albums.length && (
+                    {isDesktopOrLaptop && albums?.length && (
                         <div className={styles.btn}>
                             <Dropdown title="My Albums">
                                 {albums?.map(({ name }, key) => {

@@ -5,6 +5,6 @@ export const useTranslation = () => {
 
     return {
         _: t,
-        i18n,
+        i18n
     };
 };

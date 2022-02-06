@@ -5,5 +5,5 @@ const { persistAtom } = recoilPersist();
 export const albumsAtom = atom({
     key: "albums",
     default: [],
-    effects_UNSTABLE: [persistAtom],
+    effects_UNSTABLE: [persistAtom]
 });

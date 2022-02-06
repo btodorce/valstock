@@ -1,13 +1,11 @@
 import { albumsAtom, photosAtom } from "../../state";
 import React, { createContext, FC, ReactNode, useContext } from "react";
 import { useRecoilState } from "recoil";
-import { useAuthState } from "../../hooks";
-
+import type { User } from "../../types";
+import { useAuthState, saveCredentials } from "../../hooks";
 import Login from "../../views/login/index";
+import moment from "moment";
 
-type User = {
-    username: string;
-};
 interface P {
     me: User;
     logout: () => Promise<void>;
@@ -24,25 +22,37 @@ export const UserProvider: FC = ({ children }) => {
 
     let ret: ReactNode = null;
     if (typeof window !== "undefined") {
-        ret = !user ? <Login /> : children;
+        ret = !user?.me ? <Login /> : children;
     }
+
+    const logUserIn = (username: string) =>
+        setUser({
+            me: {
+                username,
+                createdAt: moment().toNow()
+            }
+        });
+
+    const clearState = () => {
+        setUser(null);
+        setAlbums(null);
+        setPhotos(null);
+    };
 
     return (
         <UserContext.Provider
             value={{
                 me: user,
-                async login(username, _password) {
-                    setUser({
-                        me: {
-                            username,
-                        },
-                    });
+                async login(username, password) {
+                    const result = saveCredentials(username, password).then(
+                        () => logUserIn(username)
+                    );
                 },
                 async logout() {
-                    setUser(null);
-                    setAlbums(null);
-                    setPhotos(null);
-                },
+                    navigator.credentials
+                        .preventSilentAccess()
+                        .then(() => clearState());
+                }
             }}
         >
             {ret}

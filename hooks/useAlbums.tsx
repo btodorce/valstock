@@ -10,7 +10,7 @@ interface P {
 }
 
 const exists = (albums: P[], name: string) =>
-    albums?.find?.((album) => album?.name === name);
+    albums?.find?.(album => album?.name === name);
 
 export const useAlbums = () => {
     const [albums, setAlbums] = useRecoilState<P[]>(albumsAtom);
@@ -20,7 +20,7 @@ export const useAlbums = () => {
     const save = (name: string) => {
         const newAlbum = {
             createdAt: moment().unix(),
-            name,
+            name
         };
 
         if (exists) {

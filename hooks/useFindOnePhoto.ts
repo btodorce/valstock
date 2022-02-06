@@ -17,12 +17,12 @@ export const useFindOnePhoto = (id: string) => {
             setIsLoading(true);
             unsplash.photos
                 .get({ photoId: id })
-                .then((p) => p.response)
-                .then((data) => {
+                .then(p => p.response)
+                .then(data => {
                     setPhoto(data);
                     setIsLoading(false);
                 })
-                .catch((error) => {
+                .catch(error => {
                     console.error(error);
                     setError(true);
                 });
@@ -36,7 +36,7 @@ export const useFindOnePhoto = (id: string) => {
     return {
         photo: photo,
         loading: isLoading,
-        error: error,
+        error: error
     };
 };
 

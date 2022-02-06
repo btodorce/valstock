@@ -6,7 +6,7 @@ const Context = createContext(null);
 
 export const UnsplashProvider: FC = ({ children }) => {
     const unsplash = createApi({
-        accessKey: process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY,
+        accessKey: process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY
     });
     return <Context.Provider value={unsplash}>{children}</Context.Provider>;
 };

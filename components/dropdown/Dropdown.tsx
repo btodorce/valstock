@@ -12,16 +12,16 @@ export interface P {
 export const Dropdown: FC<P> = ({ title, children }) => {
     const [isOpened, setIsOpened] = useState(false);
     const [ref, { height: viewHeight }] = useMeasure({
-        polyfill: ResizeObserver,
+        polyfill: ResizeObserver
     });
 
     const animProps = useSpring({
         height: isOpened ? viewHeight : 0,
         config: { tension: 250, friction: 32, clamp: true, duration: 150 },
-        opacity: isOpened ? 1 : 0,
+        opacity: isOpened ? 1 : 0
     });
 
-    const handleClickEvent = () => setIsOpened((x) => !x);
+    const handleClickEvent = () => setIsOpened(x => !x);
 
     return (
         <div

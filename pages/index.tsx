@@ -30,7 +30,7 @@ const Index: NextPage<P> = ({ photos, count }) => {
 export async function getServerSideProps(context) {
     const params = {
         page: 1,
-        perPage: 30,
+        perPage: 30
     };
     const data = (await unsplash.photos.list(params)).response;
     const count = data.total;

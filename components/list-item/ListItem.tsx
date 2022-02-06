@@ -19,7 +19,7 @@ const ListItem = memo(
         const style =
             isToggled || selected
                 ? {
-                      listStyleImage: `url(${checkmark.src})`,
+                      listStyleImage: `url(${checkmark.src})`
                   }
                 : { listStyle: "none" };
 
@@ -31,7 +31,7 @@ const ListItem = memo(
                     isToggled ? styles.selected : styles.unselected)
                 }
                 onClick={() => {
-                    setIsToggled((x) => !x);
+                    setIsToggled(x => !x);
                     !isToggled ? onSave(id, title) : onDelete(id);
                 }}
             >

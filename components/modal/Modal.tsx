@@ -22,12 +22,12 @@ type FormValues = {
 
 enum ModalState {
     create = "create",
-    add = "add",
+    add = "add"
 }
 
 enum Display {
     visible = "block",
-    hidden = "hidden",
+    hidden = "hidden"
 }
 
 export const Modal = ({ albums, visible, onSave, onClose }: P): JSX.Element => {
@@ -37,18 +37,18 @@ export const Modal = ({ albums, visible, onSave, onClose }: P): JSX.Element => {
         action: Yup.string().default(ModalState.create),
         title: Yup.string().when("action", {
             is: ModalState.create,
-            then: Yup.string().required(_("login.album-name-required")),
+            then: Yup.string().required(_("login.album-name-required"))
         }),
         album: Yup.array().when("action", {
             is: ModalState.add,
-            then: Yup.array().of(Yup.string()).required(),
-        }),
+            then: Yup.array().of(Yup.string()).required()
+        })
     });
 
     const defaultFormikValues: FormValues = {
         action: ModalState.create,
         title: "",
-        album: [],
+        album: []
     };
 
     return (
@@ -64,7 +64,7 @@ export const Modal = ({ albums, visible, onSave, onClose }: P): JSX.Element => {
                         initialValues={defaultFormikValues}
                         enableReinitialize={true}
                         validationSchema={validationSchema}
-                        onSubmit={(values) => {
+                        onSubmit={values => {
                             console.log(values);
                             onSave(values);
                             onClose();
@@ -120,7 +120,7 @@ export const Modal = ({ albums, visible, onSave, onClose }: P): JSX.Element => {
                                 {values.action === ModalState.add && (
                                     <FieldArray
                                         name="album"
-                                        render={(arrayHelpers) => (
+                                        render={arrayHelpers => (
                                             <div className={styles.listWrapper}>
                                                 <ul>
                                                     {albums?.map(
@@ -138,9 +138,7 @@ export const Modal = ({ albums, visible, onSave, onClose }: P): JSX.Element => {
                                                                         value
                                                                     )
                                                                 }
-                                                                onDelete={(
-                                                                    index
-                                                                ) =>
+                                                                onDelete={index =>
                                                                     arrayHelpers.remove(
                                                                         index
                                                                     )

@@ -12,7 +12,7 @@ i18next.use(initReactI18next).init({
     interpolation: { escapeValue: false },
     lng: "en",
     keySeparator: false,
-    resources: languages,
+    resources: languages
 });
 
 const SafeHydrate = ({ children }) => (
