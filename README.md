@@ -23,3 +23,6 @@
     3. Some animations
     4. 2 Snapshot tests
     5. cloudformation template for deployment at aws
+    
+# For local dev 
+    Please copy the content from example.env as .env.local and add the following api key "LOrR2EYmIl_SjHOfQsJAkzAEf6dmJid3XybsVQJLzfc"
