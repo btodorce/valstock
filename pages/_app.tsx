@@ -14,13 +14,9 @@ const SafeHydrate = ({ children }) => (
         {typeof window === "undefined" ? null : children}
     </div>
 );
-i18next.use(initReactI18next).init({
-    interpolation: { escapeValue: false },
-    lng: "en",
-    resources: languages
-});
+
 function CustomApp({ Component, pageProps }: AppProps) {
-    const [language, setLanguage] = useState<string>();
+    const [language, setLanguage] = useState<string>("en");
 
     useEffect(() => {
         const lng =
@@ -28,6 +24,12 @@ function CustomApp({ Component, pageProps }: AppProps) {
             navigator.language;
         setLanguage(lng?.slice(0, 2));
     }, []);
+
+    i18next.use(initReactI18next).init({
+        interpolation: { escapeValue: false },
+        lng: language,
+        resources: languages
+    });
 
     return (
         <SafeHydrate>

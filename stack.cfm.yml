@@ -188,7 +188,7 @@ Resources:
                         Value: !Ref UnsplashAccessKey
                   Essential: true
                   Image: >-
-                      188985040416.dkr.ecr.eu-west-3.amazonaws.com/valstock:latest
+                      public.ecr.aws/u5t5t6m8/valstock:latest
                   LinuxParameters: {}
                   LogConfiguration:
                       LogDriver: awslogs
