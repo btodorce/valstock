@@ -1,12 +1,20 @@
-import { useFindOneAlbum, useTranslation, usePhotos } from "../../hooks";
+import { useTranslation } from "../../hooks";
+import { useFavoriteAlbums } from "../../state";
 import { NextPage } from "next";
 import { Button, DisplayImage, Layout } from "../../components";
 import { useRouter } from "next/router";
-import moment from "moment";
 import _ from "lodash";
 import styles from "./index.module.scss";
 import classnames from "classnames";
+import type { Image } from "../../types";
+import moment from "moment";
 import { useMemo } from "react";
+
+type Album = {
+    createdAt?: Date;
+    name: string;
+    photos: Image[];
+};
 
 const AlbumPage: NextPage = () => {
     const { _ } = useTranslation();
@@ -15,18 +23,19 @@ const AlbumPage: NextPage = () => {
     const { album } = router.query;
     const albumName = typeof album === "object" ? album[0] : album;
 
-    const { album: current } = useFindOneAlbum(albumName);
-    const { photos } = usePhotos();
-    const albumPhotos = useMemo(() => {
-        return photos?.filter?.(p => p.album === current.name);
-    }, [current.name, photos]);
+    const [favoriteAlbums] = useFavoriteAlbums();
 
-    console.log("album", current);
-    console.log("album photos", albumPhotos);
+    const useFindOneAlbum = (name: string) =>
+        useMemo(
+            () => favoriteAlbums?.find?.(album => album.name === name),
+            [name]
+        );
+
+    const current = useFindOneAlbum(albumName);
 
     return (
         <Layout>
-            {albumPhotos && (
+            {current && (
                 <div className={styles.container}>
                     <div className={styles.header}>
                         <h2 className={styles.headerText}>{current?.name}</h2>
@@ -36,13 +45,13 @@ const AlbumPage: NextPage = () => {
                         </p>
                     </div>
                     <div className={styles.content}>
-                        {albumPhotos?.map?.((item, key) => (
+                        {current?.photos?.map?.((item, key) => (
                             <DisplayImage
                                 style={{
                                     padding: 10
                                 }}
-                                key={key}
-                                image={item?.photo}
+                                key={item.id}
+                                image={item}
                             >
                                 <div>
                                     <p>asdasd</p>

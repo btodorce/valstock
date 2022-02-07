@@ -1,4 +1,4 @@
-import { useTranslation, useAlbums, usePhotos } from "../../hooks";
+import { useTranslation } from "../../hooks";
 import { InferGetServerSidePropsType, NextPage } from "next";
 import { useRouter } from "next/router";
 import styles from "./image.module.scss";

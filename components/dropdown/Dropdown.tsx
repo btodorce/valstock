@@ -4,7 +4,7 @@ import { useSpring, a } from "@react-spring/web";
 import styles from "./index.module.scss";
 import { ResizeObserver } from "@juggle/resize-observer";
 
-export interface P {
+interface P {
     title: string;
     children: ReactNode;
 }

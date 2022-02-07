@@ -56,3 +56,7 @@ $btnWidth: 10em;
     margin-left: 25%;
     grid-template-columns: repeat(4, 5fr);
 }
+.container {
+    min-height: 92vh;
+    overflow: hidden;
+}

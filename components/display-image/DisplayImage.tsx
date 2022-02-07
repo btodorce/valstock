@@ -1,6 +1,6 @@
 import _ from "lodash";
 import Link from "next/link";
-import { FC, ImgHTMLAttributes, useState } from "react";
+import { FC, ImgHTMLAttributes, memo, useState } from "react";
 import { DetailedHTMLProps } from "react";
 import type { Image } from "../../types";
 import styles from "./DisplayImage.module.scss";
@@ -25,6 +25,9 @@ export const DisplayImage: FC<P & ImageProps> = ({
 
     const handleVisibilityChange = () => setIsVisible(x => !x);
 
+    if (!image) {
+        return <></>;
+    }
     return (
         <>
             <div
@@ -32,11 +35,11 @@ export const DisplayImage: FC<P & ImageProps> = ({
                 onMouseOver={handleVisibilityChange}
                 onMouseOut={handleVisibilityChange}
             >
-                <Link passHref href={href}>
+                <Link passHref href={href ?? ""}>
                     <img
                         src={image?.urls?.small}
-                        key={image.id}
-                        alt={image.description}
+                        key={image?.id}
+                        alt={image?.description}
                         loading="lazy"
                         {...rest}
                     />
@@ -46,3 +49,5 @@ export const DisplayImage: FC<P & ImageProps> = ({
         </>
     );
 };
+DisplayImage.displayName = "DisplayImage";
+export default DisplayImage;

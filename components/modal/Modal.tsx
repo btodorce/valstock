@@ -1,4 +1,4 @@
-import { useAlbums, useTranslation } from "../../hooks";
+import { useTranslation } from "../../hooks";
 import * as Yup from "yup";
 import { Field, FieldArray, Form, Formik } from "formik";
 import { Button } from "..";
@@ -51,8 +51,6 @@ export const Modal = ({ albums, visible, onSave, onClose }: P): JSX.Element => {
         album: []
     };
 
-    console.log("albums", albums);
-
     return (
         <div
             className={classnames(
@@ -67,7 +65,6 @@ export const Modal = ({ albums, visible, onSave, onClose }: P): JSX.Element => {
                         enableReinitialize={true}
                         validationSchema={validationSchema}
                         onSubmit={values => {
-                            console.log(values);
                             onSave(values);
                             onClose();
                         }}

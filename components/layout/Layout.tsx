@@ -1,18 +1,18 @@
 import { FC, ReactNode } from "react";
 import styles from "./Layout.module.scss";
 import Link from "next/link";
-import { useAlbums } from "../../hooks";
 import { Dropdown } from "../";
 import logo from "../../public/Site Logo.svg";
 import Image from "next/image";
 import { useMediaQuery } from "react-responsive";
+import { useFavoriteAlbums } from "../../state";
 
 interface P {
     footer?: ReactNode;
 }
 
 export const Layout: FC<P> = ({ footer, children }) => {
-    const { albums } = useAlbums();
+    const [albums] = useFavoriteAlbums();
     const isDesktopOrLaptop = useMediaQuery({
         query: "(min-width: 1224px)"
     });
@@ -28,9 +28,9 @@ export const Layout: FC<P> = ({ footer, children }) => {
                             alt="valstock"
                         />
                     </Link>
-                    {isDesktopOrLaptop && albums?.length && (
+                    {albums?.length && (
                         <div className={styles.btn}>
-                            {/* <Dropdown title="My Albums">
+                            <Dropdown title="My Albums">
                                 {albums?.map(({ name }, key) => {
                                     return (
                                         <Link
@@ -42,7 +42,7 @@ export const Layout: FC<P> = ({ footer, children }) => {
                                         </Link>
                                     );
                                 })}
-                            </Dropdown> */}
+                            </Dropdown>
                         </div>
                     )}
                 </span>

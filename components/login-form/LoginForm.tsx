@@ -54,8 +54,8 @@ export const LoginForm: FC<P> = ({ onLogin, children, ...props }) => {
     const { _ } = useTranslation();
 
     const validationSchema: Yup.SchemaOf<FormValues> = Yup.object({
-        email: Yup.string().email().required(_("login.username-required")),
-        password: Yup.string().required(_("login.password-required")).min(1)
+        email: Yup.string().email().required(_("common.error")),
+        password: Yup.string().required(_("common.error")).min(6)
     });
 
     const defaultFormikValues: FormValues = {

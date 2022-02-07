@@ -1,9 +1,10 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import { Modal } from "..";
-import { useAlbums } from "../../hooks";
+import { useFavoriteAlbums } from "../../state";
 import { Image } from "../../types";
 
-import { useFilteredAlbums } from "../../state/albums";
+import moment from "moment";
+import { curry } from "lodash";
 
 interface P {
     visible: boolean;
@@ -13,22 +14,60 @@ interface P {
 
 export const CreateModal = memo(
     ({ visible, photo, onClose }: P): JSX.Element => {
-        const { albums, createNewAlbum } = useAlbums();
-        const [something, setSomething] = useFilteredAlbums("new test album");
+        const [favoriteAlbums, setFavoriteAlbum] = useFavoriteAlbums();
+
+        const find = (name: string) =>
+            favoriteAlbums?.find?.(album => album.name === name);
 
         return (
             <Modal
                 visible={visible}
                 onSave={({ action, album, title }) => {
+                    const photos = find(title)?.photos;
                     if (action === "create") {
-                        console.log("title", title);
-                        setSomething({ title, photo });
+                        const newEntry = {
+                            name: title,
+                            createdAt: moment().toDate(),
+                            photos: photos ? [...photos, photo] : [photo]
+                        };
+                        setFavoriteAlbum(
+                            favoriteAlbums
+                                ? [...favoriteAlbums, newEntry]
+                                : [newEntry]
+                        );
                     } else {
-                        album?.forEach?.(album => {});
+                        const updatedState = album?.map?.(album => {
+                            const current = favoriteAlbums?.find?.(
+                                curr => curr.name === album
+                            );
+                            const photosReducedState =
+                                current?.photos?.filter?.(
+                                    curr => curr.id !== photo.id
+                                );
+                            const state = {
+                                name: current.name,
+                                createdAt: current.createdAt,
+                                photos: current.photos
+                                    ? [...photosReducedState, photo]
+                                    : [photo]
+                            };
+                            return state;
+                        });
+                        const reducedState = favoriteAlbums?.filter?.(
+                            ({ name }) =>
+                                name !==
+                                updatedState?.find?.(
+                                    inner => inner.name === name
+                                )?.name
+                        );
+                        setFavoriteAlbum([
+                            ...(reducedState ?? []),
+                            ...(updatedState ?? [])
+                        ]);
                     }
                 }}
                 onClose={onClose}
-                albums={albums}
+                albums={favoriteAlbums}
             />
         );
     }
