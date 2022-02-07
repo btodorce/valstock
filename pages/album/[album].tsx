@@ -51,12 +51,9 @@ const AlbumPage: NextPage = () => {
                                     padding: 10
                                 }}
                                 key={item.id}
+                                href={`/detail/${item.id}`}
                                 image={item}
-                            >
-                                <div>
-                                    <p>asdasd</p>
-                                </div>
-                            </DisplayImage>
+                            ></DisplayImage>
                         ))}
                     </div>
                     <div>

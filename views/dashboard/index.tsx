@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Layout, DisplayImage } from "../../components";
 import { Image as ImageType } from "../../types";
 import styles from "./index.module.scss";
-import config from "../../app.json";
 
 const Dashboard: NextPage = () => {
     const routePrefix = "detail";
@@ -12,7 +11,7 @@ const Dashboard: NextPage = () => {
     const limit = 50;
     const { _ } = useTranslation();
 
-    const { count, photos, error } = useFindManyPhotos(page, limit);
+    const { photos, error } = useFindManyPhotos(page, limit);
 
     if (error) {
         return <h3>{_("messages.error")}</h3>;

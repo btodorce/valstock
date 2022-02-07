@@ -127,7 +127,15 @@ export const Modal = ({ albums, visible, onSave, onClose }: P): JSX.Element => {
                                     <FieldArray
                                         name="album"
                                         render={arrayHelpers => (
-                                            <div className={styles.content}>
+                                            <div
+                                                className={classnames(
+                                                    styles.content,
+                                                    values.action ===
+                                                        ModalState.create
+                                                        ? styles.create
+                                                        : styles.update
+                                                )}
+                                            >
                                                 <ul>
                                                     {albums?.map(
                                                         (album, key) => (

@@ -37,7 +37,7 @@ export const DisplayImage: FC<P & ImageProps> = ({
             >
                 <Link passHref href={href ?? ""}>
                     <img
-                        src={image?.urls?.small}
+                        src={image?.urls?.regular}
                         key={image?.id}
                         alt={image?.description}
                         loading="lazy"

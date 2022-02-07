@@ -16,12 +16,11 @@ const ListItem = memo(
     ({ item, id, selected, onSave, onDelete }: P): JSX.Element => {
         const title = item?.name;
         const [isToggled, setIsToggled] = useState(false);
-        const style =
-            isToggled || selected
-                ? {
-                      listStyleImage: `url(${checkmark.src})`
-                  }
-                : { listStyle: "none" };
+        const style = isToggled
+            ? {
+                  listStyleImage: `url(${checkmark.src})`
+              }
+            : { listStyle: "none" };
 
         return (
             <li

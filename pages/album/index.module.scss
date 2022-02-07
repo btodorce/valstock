@@ -52,9 +52,9 @@ $btnWidth: 10em;
 }
 .content {
     display: grid;
-    width: 50%;
-    margin-left: 25%;
-    grid-template-columns: repeat(4, 5fr);
+    width: 80%;
+    margin-left: 10%;
+    grid-template-columns: repeat(4, 7fr);
 }
 .container {
     min-height: 92vh;

@@ -1,10 +1,8 @@
-import { memo, useState } from "react";
+import { memo } from "react";
 import { Modal } from "..";
 import { useFavoriteAlbums } from "../../state";
 import { Image } from "../../types";
-
 import moment from "moment";
-import { curry } from "lodash";
 
 interface P {
     visible: boolean;
@@ -16,25 +14,17 @@ export const CreateModal = memo(
     ({ visible, photo, onClose }: P): JSX.Element => {
         const [favoriteAlbums, setFavoriteAlbum] = useFavoriteAlbums();
 
-        const find = (name: string) =>
-            favoriteAlbums?.find?.(album => album.name === name);
-
         return (
             <Modal
                 visible={visible}
                 onSave={({ action, album, title }) => {
-                    const photos = find(title)?.photos;
                     if (action === "create") {
                         const newEntry = {
                             name: title,
                             createdAt: moment().toDate(),
-                            photos: photos ? [...photos, photo] : [photo]
+                            photos: [photo]
                         };
-                        setFavoriteAlbum(
-                            favoriteAlbums
-                                ? [...favoriteAlbums, newEntry]
-                                : [newEntry]
-                        );
+                        setFavoriteAlbum([...(favoriteAlbums ?? []), newEntry]);
                     } else {
                         const updatedState = album?.map?.(album => {
                             const current = favoriteAlbums?.find?.(
