@@ -6,7 +6,6 @@ ENV HUSKY_SKIP_INSTALL=1
 ENV HUSKY=0
 
 WORKDIR /app
-ENV NODE_ENV production
 COPY package.json yarn.lock ./
 
 RUN yarn --frozen-lockfile

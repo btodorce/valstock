@@ -5,7 +5,7 @@ const nextConfig = {
         outputStandalone: true
     },
     images: {
-        domains: ["images.unsplash.com", "public"]
+        domains: ["*"]
     },
     flags: {
         DEV_SSR: false
