@@ -13,7 +13,7 @@
     5. Recoil for state management
     6. i18 next for handling translations
     7. React spring for animation
-    3. Jest for unit tests
+    8. Jest for unit tests
 
 # Project
 
