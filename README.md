@@ -3,7 +3,6 @@
 -   [Valstock](#valstock)
     -   [Stack](#Stack)
     -   [Project]($Project)
-    -   [Setup](#dev)
 
 # Stack
 
@@ -24,7 +23,3 @@
     3. Some animations
     4. 2 Snapshot tests
     5. cloudformation template for deployment at aws
-
-# Setup
-
-    1. The project is available remotely at
