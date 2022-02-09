@@ -12,13 +12,7 @@ interface P {
 const { persistAtom } = recoilPersist();
 export const albumsAtom = atom<P[]>({
     key: "albums",
-    default: [
-        {
-            name: "",
-            createdAt: null,
-            photos: []
-        }
-    ],
+    default: null,
     effects_UNSTABLE: [persistAtom]
 });
 

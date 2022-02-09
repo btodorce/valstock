@@ -26,7 +26,7 @@ Parameters:
 Resources:
     CloudMap:
         Properties:
-            Description: Service Map for Docker Compose project valstock
+            Description: Service Map for  project valstock
             Name: valstock.local
             Vpc: !Ref VPC
         Type: "AWS::ServiceDiscovery::PrivateDnsNamespace"
@@ -34,7 +34,7 @@ Resources:
         Properties:
             ClusterName: valstock
             Tags:
-                - Key: com.docker.compose.project
+                - Key: com.project
                   Value: valstock
         Type: "AWS::ECS::Cluster"
     Default80Ingress:
@@ -51,9 +51,9 @@ Resources:
         Properties:
             GroupDescription: valstock Security Group for default network
             Tags:
-                - Key: com.docker.compose.project
+                - Key: com.project
                   Value: valstock
-                - Key: com.docker.compose.network
+                - Key: com.network
                   Value: valstock_default
             VpcId: !Ref VPC
         Type: "AWS::EC2::SecurityGroup"
@@ -73,13 +73,13 @@ Resources:
                 - Ref: DefaultNetwork
             Subnets: !Ref Subnets
             Tags:
-                - Key: com.docker.compose.project
+                - Key: com.project
                   Value: valstock
             Type: application
         Type: "AWS::ElasticLoadBalancingV2::LoadBalancer"
     LogGroup:
         Properties:
-            LogGroupName: /docker-compose/valstock
+            LogGroupName: /valstock
         Type: "AWS::Logs::LogGroup"
     WebService:
         DependsOn:
@@ -116,9 +116,9 @@ Resources:
                           - WebServiceDiscoveryEntry
                           - Arn
             Tags:
-                - Key: com.docker.compose.project
+                - Key: com.project
                   Value: valstock
-                - Key: com.docker.compose.service
+                - Key: com.service
                   Value: web
             TaskDefinition:
                 Ref: WebTaskDefinition
@@ -155,7 +155,7 @@ Resources:
             Port: 3000
             Protocol: HTTP
             Tags:
-                - Key: com.docker.compose.project
+                - Key: com.project
                   Value: valstock
             TargetType: ip
             VpcId: !Ref VPC
@@ -227,8 +227,8 @@ Resources:
                 - "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
                 - "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
             Tags:
-                - Key: com.docker.compose.project
+                - Key: com.project
                   Value: valstock
-                - Key: com.docker.compose.service
+                - Key: com.service
                   Value: web
         Type: "AWS::IAM::Role"

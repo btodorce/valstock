@@ -9,6 +9,10 @@ const nextConfig = {
     },
     flags: {
         DEV_SSR: false
+    },
+    i18n: {
+        locales: ["en"],
+        defaultLocale: "en"
     }
 };
 

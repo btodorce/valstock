@@ -17,6 +17,8 @@ export const Layout: FC<P> = ({ footer, children }) => {
         query: "(min-width: 1224px)"
     });
 
+    console.log("albums", albums);
+
     return (
         <div className={styles.page}>
             <div className={styles.header}>
@@ -28,7 +30,7 @@ export const Layout: FC<P> = ({ footer, children }) => {
                             alt="valstock"
                         />
                     </Link>
-                    {albums?.length && (
+                    {albums && (
                         <div className={styles.btn}>
                             <Dropdown title="My Albums">
                                 {albums?.map(({ name }, key) => {

@@ -25,9 +25,6 @@ export const DisplayImage: FC<P & ImageProps> = ({
 
     const handleVisibilityChange = () => setIsVisible(x => !x);
 
-    if (!image) {
-        return <></>;
-    }
     return (
         <>
             <div
@@ -35,15 +32,17 @@ export const DisplayImage: FC<P & ImageProps> = ({
                 onMouseOver={handleVisibilityChange}
                 onMouseOut={handleVisibilityChange}
             >
-                <Link passHref href={href ?? ""}>
-                    <img
-                        src={image?.urls?.regular}
-                        key={image?.id}
-                        alt={image?.description}
-                        loading="lazy"
-                        {...rest}
-                    />
-                </Link>
+                {image && (
+                    <Link passHref href={href ?? ""}>
+                        <img
+                            src={image?.urls?.regular}
+                            key={image?.id}
+                            alt={image?.description ?? ""}
+                            loading="lazy"
+                            {...rest}
+                        />
+                    </Link>
+                )}
                 {isVisible && <div className={styles.footer}></div>}
             </div>
         </>
